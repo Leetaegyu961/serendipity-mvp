@@ -29,7 +29,7 @@ export default function OnboardingPage() {
     else navigate('/home');
   };
 
-  const canNext = step === 1 || (step === 2 && selectedTags.length > 0) || (step === 3 && !!selectedTopic);
+  const canNext = (step === 1 && nickname.trim().length > 0) || (step === 2 && selectedTags.length > 0) || (step === 3 && !!selectedTopic);
 
   return (
     <motion.div
@@ -72,22 +72,44 @@ export default function OnboardingPage() {
                 flexDirection: 'column', alignItems: 'center', gap: 16,
               }}>
                 <div style={{ fontSize: 44 }}>😺</div>
-                <div style={{ fontSize: 22, fontWeight: 700, color: 'var(--color-text-primary)' }}>
-                  {nickname}
-                </div>
-                <button
-                  onClick={reroll}
+
+                {/* 닉네임 직접 입력 */}
+                <input
+                  type="text"
+                  value={nickname}
+                  onChange={(e) => setNickname(e.target.value.slice(0, 12))}
+                  maxLength={12}
+                  placeholder="닉네임 입력"
                   style={{
-                    display: 'flex', alignItems: 'center', gap: 6,
-                    background: '#FFFFFF', border: '1px solid var(--color-border)',
-                    borderRadius: 20, padding: '8px 16px', cursor: 'pointer',
-                    fontSize: 13, color: 'var(--color-text-secondary)',
+                    width: '100%', textAlign: 'center',
+                    fontSize: 22, fontWeight: 700, color: 'var(--color-text-primary)',
+                    background: 'transparent', border: 'none',
+                    borderBottom: '2px solid var(--color-border)',
+                    padding: '4px 8px', outline: 'none',
                     fontFamily: "'Noto Sans KR', sans-serif",
+                    transition: 'border-color 0.15s',
                   }}
-                >
-                  <RefreshCw size={13} />
-                  다른 닉네임
-                </button>
+                  onFocus={(e) => { e.target.style.borderBottomColor = '#E8521A'; }}
+                  onBlur={(e) => { e.target.style.borderBottomColor = 'var(--color-border)'; }}
+                />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <button
+                    onClick={reroll}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 6,
+                      background: '#FFFFFF', border: '1px solid var(--color-border)',
+                      borderRadius: 20, padding: '8px 16px', cursor: 'pointer',
+                      fontSize: 13, color: 'var(--color-text-secondary)',
+                      fontFamily: "'Noto Sans KR', sans-serif",
+                    }}
+                  >
+                    <RefreshCw size={13} />
+                    랜덤 닉네임
+                  </button>
+                  <span style={{ fontSize: 11, color: 'var(--color-text-tertiary)' }}>
+                    {nickname.length}/12
+                  </span>
+                </div>
               </div>
               <p style={{ marginTop: 14, fontSize: 12, color: 'var(--color-text-tertiary)', textAlign: 'center' }}>
                 크루에게만 공개돼요
